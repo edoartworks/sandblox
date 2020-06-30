@@ -12,6 +12,8 @@ export (float, 0.1, 1) var mouse_sensitivity_y : float = 0.2
 export (float, -90, 0) var min_pitch : float = -75
 export (float, 0, 90) var max_pitch : float = 75
 
+export (PackedScene) var ability_primary = preload("res://Abilities/PrimaryFire/Bullet.tscn")
+
 var velocity : Vector3
 var y_velocity : float  # makes easier to control Y vel without messin the others
 
@@ -19,15 +21,14 @@ onready var camera_pivot = $CameraPivot
 onready var camera = $CameraPivot/SpringArm/Camera
 onready var primary_fire_locator = $PrimaryFire_Loc
 
-export (PackedScene) var ability_primary = preload("res://Abilities/PrimaryFire/Bullet.tscn")
 
 func _ready():
-	# capture mouse
+	# capture mouse. Should probably move this to another place...
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(delta):
-	# release mouse on esc
+	# release mouse on esc. Should probably move this to another place...
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
@@ -36,19 +37,20 @@ func _physics_process(delta):
 	handle_movement(delta)
 
 func _input(event):
-
+	# handle mouse button press
 	if event is InputEventMouseButton:
 		if Input.is_action_just_pressed("fire_primary"):
 			fire_primary()
 		
 		# capture mouse if clicking while not captured
+		# Should probably move this to another place...
 		if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-	# player and camera rotation
+	# handle mouse movement
 	if event is InputEventMouseMotion:
-		# separate rotations to avoid issues
-		# X is done on the camera and Y on the character
+		# rotate character where mouse is aiming.
+		# X rotation is done on the camera and Y on the character to avoid issues. So the tutorial says.
 		camera_pivot.rotation_degrees.x -= event.relative.y * mouse_sensitivity_y
 		camera_pivot.rotation_degrees.x = clamp(camera_pivot.rotation_degrees.x, min_pitch, max_pitch)
 		rotation_degrees.y -= event.relative.x * mouse_sensitivity_x
