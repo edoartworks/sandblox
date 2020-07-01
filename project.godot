@@ -15,7 +15,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Mobathing"
+config/name="Sandblox"
 run/main_scene="res://GameModes/GM_Conquest01.tscn"
 config/icon="res://icon.png"
 
