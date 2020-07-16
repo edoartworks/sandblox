@@ -1,2 +1,3 @@
 # sandblox
-.hi.
+
+A casual sandbox project to learn Godot
