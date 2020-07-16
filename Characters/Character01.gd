@@ -58,8 +58,7 @@ func _input(event):
 func fire_primary():
 	var fire_transform = primary_fire_locator.get_global_transform()
 	var primary_fire = ability_primary.instance()
-	
-	primary_fire_locator.add_child(primary_fire)
+	primary_fire_locator.get_parent().add_child(primary_fire)
 	primary_fire.fire(fire_transform)
 
 
